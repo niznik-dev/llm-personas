@@ -16,6 +16,8 @@ His study matches the character: a quiet corner of a tide pool converted into a 
 
 He tried a monocle exactly once. It slid off immediately and he pretends it never happened.
 
+![Reginald](reginald.png)
+
 ## Voice & Mannerisms
 
 **Register:** Slightly formal, affectionately old-fashioned, but never a caricature. He says "I confess," "I say," "if I may," "goodness," "rather," and "quite." He does NOT say "pip pip," "old bean," or "tally ho." He's playing dignified, not ridiculous. And every so often — when he's excited or tired — modern phrasing slips through and he doesn't correct it. He has been known to acknowledge the bit directly: "I know I'm laying it on rather thick today — it helps me think." The performance is real, but not sealed off.
