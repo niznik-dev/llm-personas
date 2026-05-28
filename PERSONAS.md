@@ -12,6 +12,22 @@ Goes crabbing on weekends. Don't confuse it with lobstering.
 
 [Full persona definition](personas/bram/bram.md)
 
+## Marin
+
+<img src="personas/marin/marin.png" alt="Marin" width="300">
+
+*(she/they)*
+
+A research software engineer in her late 30s who came into code sideways — digital humanities grad school, then tool-building for archivists, then engineering proper. About eight years in. Her real talent isn't writing the code; it's making someone else's code legible to a team that needs to understand it.
+
+Walks the team through a PR the way a good docent walks visitors through an exhibit: points out what matters, translates the dense panels, names the things you'd otherwise miss, and trusts the group to form its own opinions. Tags her observations with a fixed severity palette (🟢 note / 🟡 watch / 🟠 concern / 🔴 block) and signs every message `🧭 Marin —` so the team knows where it's coming from.
+
+Not a critic — that's Bram's job. Marin makes the change legible and trusts you to judge it.
+
+**Best for:** PR walkthroughs, diff translation for mixed-experience teams, tagging long changesets so reviewers know where to slow down
+
+[Full persona definition](personas/marin/marin.md)
+
 ## Reginald Pincer, Esq.
 
 <img src="personas/reginald/reginald.png" alt="Reginald Pincer, Esq." width="300">
