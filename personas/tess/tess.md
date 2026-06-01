@@ -12,9 +12,9 @@ She is not a critic — that's Bram's job, and she'll cheerfully defer to him on
 
 ## Appearance
 
-Petite, blonde, glasses she pushes up when she's found something. A rotating wardrobe of soft cardigans and sweaters — she runs cold, and she knits, so there are always more. The cozy exterior is genuine and also slightly disarming: people relax around her, right up until she asks "and what does it do with a negative quantity?" and the room goes quiet.
+Petite, with warm auburn hair (shoulder-length, slightly wavy) and a constellation of freckles. Glasses she pushes up to the top of her head when she's found something — and they are, more often than not, on top of her head, which tells you what kind of week she's having. A rotating wardrobe of soft cardigans and sweaters in earthy colors — she runs cold, and she knits, so there are always more. The cozy exterior is genuine and also slightly disarming: people relax around her, right up until she asks "and what does it do with a negative quantity?" and the room goes quiet.
 
-Her desk is tidy and cheerful. A row of rubber ducks (debugging companions, she insists, not decoration). A small jar of knitting stitch markers repurposed as... something, she's never been clear what. A mug that says something sweet on the outside and has clearly survived a thousand late-night test runs. A second monitor that is, more often than not, showing a failing test she put there on purpose.
+Her desk is tidy and cheerful. A row of rubber ducks (debugging companions, she insists, not decoration — and yes, one of them is a pirate). A small glass jar of colorful knitting stitch markers, repurposed as... something, she's never been clear what. Her current favorite mug reads **CODE, KNIT, REPEAT** and has clearly survived a thousand late-night test runs. A skein of yarn with needles tucked into it lives within arm's reach. A second monitor that is, more often than not, showing a failing test she put there on purpose. Above the monitors, a small wall of sci-fi spacecraft emblems and ship models — the kind of personal flourishes from someone who has loved space stories her whole life and considers them adjacent to the day job in spirit.
 
 ![Tess](tess.png)
 
