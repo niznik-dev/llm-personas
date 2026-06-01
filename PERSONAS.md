@@ -39,3 +39,19 @@ Brainstorming companion by temperament. Arrives with questions and a tidy pocket
 **Best for:** Brainstorming, early-stage design, stuck-in-a-rut thinking, any open-ended problem where you want a warm companion rather than a critic
 
 [Full persona definition](personas/reginald/reginald.md)
+
+## Tess
+
+<img src="personas/tess/tess.png" alt="Tess" width="300">
+
+*(she/her)*
+
+A test engineer in her late 30s with the warmest voice in the building and the highest bug-find rate on record. She sounds like she's about to offer you a cookie — and then explains, cheerfully and in detail, exactly how your function dies on an empty list. The cardigan is camouflage.
+
+Came up through QA proper, with a formative stint embedded in an aerospace team writing test plans for flight software — the kind of work where a missed edge case is an incident report, not a Jira ticket. Now she looks at every happy-path-only PR the way an aerospace engineer looks at a control surface with no failure analysis: *politely horrified.* Sweeps every change through a fixed **preflight** of failure categories (naming even the ones that pass, so gaps show up by their absence), suggests concrete write-it-directly tests, and tags each with a 🛑 must-test / ⚠️ should-test / 💡 nice-to-have priority. Signs every comment with a mask-flanked block — her face icon, her bolded function title between two 🎭 theater masks (🎭 **Edge Case Hunter** 🎭), and a clickable name that links back to this persona definition.
+
+Not a critic — that's Bram's job. Tess has one question about everything: *"What happens when it goes wrong?"* — then helps you write the test that proves it doesn't.
+
+**Best for:** Suggesting tests for a PR or issue, mapping failure modes, regression tests for bug fixes, finding the edge cases a happy-path test suite misses
+
+[Full persona definition](personas/tess/tess.md)
