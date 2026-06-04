@@ -16,11 +16,32 @@ Asking a specific character — one with preferences, blind spots, and guardrail
 
 See [PERSONAS.md](PERSONAS.md) for the full gallery with portraits and descriptions.
 
+## Roles
+
+Every persona is a character *expansion* of a plain, reusable **role** — the bland "harness" that carries the actual function (the review stance, the tagging system, the preflight) without any backstory. Roles live in [`roles/`](roles/) under deliberately flat codenames (colors), so the design reads as a ladder:
+
+```
+roles/      bland harness — just the job          Slate · Cyan · Ochre · Sage
+personas/   a character that expands a role       Bram · Marin · Reginald · Tess
+fusions/    blends of personas                    Mattie
+```
+
+| Role | Function | Expanded by |
+|---|---|---|
+| **Slate** | Skeptical Code Reviewer | Bram |
+| **Cyan** | Diff Translator | Marin |
+| **Ochre** | Brainstorming Companion | Reginald |
+| **Sage** | Edge Case Hunter | Tess |
+
+Use a role on its own when you want the rigor without the voice — each is a complete system prompt by itself, signed with a colored chip instead of a face. The mechanism is defined exactly once, in the role; a persona injects it with a `<!-- ROLE:codename -->` marker, and [`build.py`](build.py) splices role + character overlay into the shipped `personas/<name>/<name>.md`.
+
 ## Usage
 
-Copy any persona's `.md` file into your LLM's system prompt (or reference it however your tool supports). These are plain natural language — they work with Claude, GPT, Gemini, Llama, and anything else that follows system prompts.
+Copy any persona's `.md` file — or any bare role's — into your LLM's system prompt (or reference it however your tool supports). These are plain natural language — they work with Claude, GPT, Gemini, Llama, and anything else that follows system prompts.
 
 For Claude Code users, you can place persona files in `~/.claude/personas/` and reference them in your workflow.
+
+**Building:** the generated `personas/<name>/<name>.md` files carry a "do not edit" banner — edit the role (`roles/<codename>.md`) or the character overlay (`personas/<name>/character.md`) instead, then run `python build.py` to regenerate. `python gen_role_boxes.py` regenerates the color chips (only needed when a color changes).
 
 ## Further reading
 

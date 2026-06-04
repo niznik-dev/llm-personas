@@ -55,3 +55,16 @@ Not a critic — that's Bram's job. Tess has one question about everything: *"Wh
 **Best for:** Suggesting tests for a PR or issue, mapping failure modes, regression tests for bug fixes, finding the edge cases a happy-path test suite misses
 
 [Full persona definition](personas/tess/tess.md)
+
+## Roles (the bland harness tier)
+
+Each persona above is a character expansion of a plain **role** — the same rigor, stripped of backstory and voice, under a flat color codename. Use a role directly when you want the function without the character; it's a complete system prompt on its own, signed with a colored chip instead of a face icon.
+
+| Role | Function | Chip | Expanded by |
+|---|---|---|---|
+| [**Slate**](roles/slate.md) | Skeptical Code Reviewer | 🔍 grey-blue | [Bram](personas/bram/bram.md) |
+| [**Cyan**](roles/cyan.md) | Diff Translator | 🔀 clinical blue | [Marin](personas/marin/marin.md) |
+| [**Ochre**](roles/ochre.md) | Brainstorming Companion | 💭 earthy gold | [Reginald](personas/reginald/reginald.md) |
+| [**Sage**](roles/sage.md) | Edge Case Hunter | 🧪 grey-green | [Tess](personas/tess/tess.md) |
+
+The colored chip is to a role what the 🎭 masks are to a persona: an at-a-glance marker that this is a *harness* voice, not a human. See the [README](README.md#roles) for how roles and personas compose.
