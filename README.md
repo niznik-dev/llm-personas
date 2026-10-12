@@ -50,6 +50,10 @@ For Claude Code users, you can place persona files in `~/.claude/personas/` and 
 - **[Role play with large language models](https://www.nature.com/articles/s41586-023-06647-8)** (Shanahan et al., Nature 2023) — Frames LLM role-play as a legitimate lens for understanding and steering model behavior, not just a novelty.
 - **[Personalization features can make LLMs more agreeable](https://news.mit.edu/2026/personalization-features-can-make-llms-more-agreeable-0218)** (MIT/Penn State, 2026) — Long conversations and personalization make sycophancy *worse* over time, suggesting structural countermeasures like personas may be more durable than prompt-level fixes.
 
+## Acknowledgments
+
+Thanks to [Matt Coleman](https://github.com/msbc) for contributing the **Coral** role and the **Oscar Fury** persona — the repo's first outside contribution, and its first cuttlefish. 🦑
+
 ## Image attribution
 
 Persona portraits are AI-generated using Google Gemini and carry SynthID watermarks.
