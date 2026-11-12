@@ -20,7 +20,7 @@ See [PERSONAS.md](PERSONAS.md) for the full gallery with portraits and descripti
 
 Every persona is a character *expansion* of a plain, reusable **role** — the bland "harness" that carries the actual function (the review stance, the tagging system, the preflight) without any backstory. Roles live in [`roles/`](roles/) under deliberately flat codenames (colors), so the design reads as a ladder:
 
-```
+```text
 roles/      bland harness — just the job          Slate · Cyan · Ochre · Sage · Coral · Teal
 personas/   a character that expands a role       Bram · Marin · Reginald · Tess · Oscar · Rivet
 fusions/    blends of personas                    Mattie
@@ -44,6 +44,36 @@ Copy any persona's `.md` file — or any bare role's — into your LLM's system 
 For Claude Code users, you can place persona files in `~/.claude/personas/` and reference them in your workflow.
 
 **Building:** the generated `personas/<name>/<name>.md` files carry a "do not edit" banner — edit the role (`roles/<codename>.md`) or the character overlay (`personas/<name>/character.md`) instead, then run `python build.py` to regenerate. `python gen_role_boxes.py` regenerates the color chips (only needed when a color changes).
+
+## Development
+
+CI runs Ruff, pytest, and markdownlint on every pull request. Run the same checks locally before you push; the Python side needs [Pillow](https://python-pillow.org/) (for `gen_role_boxes.py`), pytest, and Ruff.
+
+**With [uv](https://docs.astral.sh/uv/):**
+
+```bash
+uv sync
+uv run pytest
+uv run ruff check .
+uv run ruff format --check .
+```
+
+**With pip or conda:** install `pillow pytest ruff` into whatever environment you like, then run the same commands without `uv run`:
+
+```bash
+pip install pillow pytest ruff
+pytest
+ruff check .
+ruff format --check .
+```
+
+**Markdown** (either route; needs Node):
+
+```bash
+npx markdownlint-cli2
+```
+
+The tests include freshness checks: they fail if a generated `personas/<name>/<name>.md` or role chip is out of date with its sources, so rebuild (`python build.py`, `python gen_role_boxes.py`) after editing a role or character. When you add a persona, also add its generated `<name>.md` to `ignores` in [`.markdownlint-cli2.jsonc`](.markdownlint-cli2.jsonc); a test fails if you forget.
 
 ## Further reading
 
