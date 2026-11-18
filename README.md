@@ -43,6 +43,17 @@ Copy any persona's `.md` file — or any bare role's — into your LLM's system 
 
 For Claude Code users, you can place persona files in `~/.claude/personas/` and reference them in your workflow.
 
+**Installing:** `python install.py` soft-links every built persona into a `personas/` folder inside each AI tool directory it finds in your home directory (`~/.claude`, `~/.codex`, `~/.gemini`, `~/.cursor`, `~/.copilot`, `~/.continue`, `~/.codeium/windsurf`, `~/.config/opencode`, `~/.config/goose`). Tool directories that don't exist are skipped, never created. Because the links point back at this checkout, `git pull` plus `python build.py` updates every install at once.
+
+```bash
+python install.py --dry-run        # preview, change nothing
+python install.py                  # link into every tool dir found
+python install.py --dir ~/my/dir   # link straight into ~/my/dir instead (repeatable)
+python install.py --force          # replace existing files or links in the way
+```
+
+Existing files are left alone unless you pass `--force`.
+
 **Building:** the generated `personas/<name>/<name>.md` files carry a "do not edit" banner — edit the role (`roles/<codename>.md`) or the character overlay (`personas/<name>/character.md`) instead, then run `python build.py` to regenerate. `python gen_role_boxes.py` regenerates the color chips (only needed when a color changes).
 
 ## Development
