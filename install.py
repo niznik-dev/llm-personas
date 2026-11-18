@@ -132,9 +132,14 @@ def main(argv: list[str] | None = None, home: Path | None = None) -> int:
     for target in targets:
         print(f"{prefix}{target}")
         for source in personas:
-            status = link_persona(
-                source, target, force=args.force, dry_run=args.dry_run
-            )
+            try:
+                status = link_persona(
+                    source, target, force=args.force, dry_run=args.dry_run
+                )
+            except OSError as exc:
+                skipped += 1
+                print(f"  failed    {source.name}: {exc}")
+                continue
             if status == "skipped":
                 skipped += 1
                 print(f"  skipped   {source.name} (already exists; use --force)")
