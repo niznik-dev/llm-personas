@@ -89,14 +89,12 @@ def replace_with_link(link: Path, source: Path) -> None:
     The new symlink is built under a temporary name beside the old file and
     renamed over it, so if creating it fails the original is left untouched.
     """
-    tmp = link.with_name(f".{link.name}.tmp-{os.getpid()}")
-    tmp.unlink(missing_ok=True)
+    tmp = link.with_name(f".{link.name}.tmp-{os.urandom(16).hex()}")
+    tmp.symlink_to(source)
     try:
-        tmp.symlink_to(source)
         os.replace(tmp, link)
-    except OSError:
+    finally:
         tmp.unlink(missing_ok=True)
-        raise
 
 
 def link_file(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) -> str:
