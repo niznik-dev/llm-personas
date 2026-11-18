@@ -43,13 +43,15 @@ Copy any persona's `.md` file — or any bare role's — into your LLM's system 
 
 For Claude Code users, you can place persona files in `~/.claude/personas/` and reference them in your workflow.
 
-**Installing:** `python install.py` soft-links every built persona into a `personas/` folder inside each AI tool directory it finds in your home directory (`~/.claude`, `~/.codex`, `~/.gemini`, `~/.cursor`, `~/.copilot`, `~/.continue`, `~/.codeium/windsurf`, `~/.config/opencode`, `~/.config/goose`). Tool directories that don't exist are skipped, never created. Because the links point back at this checkout, `git pull` plus `python build.py` updates every install at once.
+**Installing:** `python install.py` soft-links every built persona, plus the plain [roles](roles/) (Slate, Cyan, ...), into a `personas/` folder inside each AI tool directory it finds in your home directory (`~/.claude`, `~/.codex`, `~/.gemini`, `~/.cursor`, `~/.copilot`, `~/.continue`, `~/.codeium/windsurf`, `~/.config/opencode`, `~/.config/goose`). Tool directories that don't exist are skipped, never created. Because the links point back at this checkout, `git pull` plus `python build.py` updates every install at once.
 
 ```bash
 python install.py --dry-run        # preview, change nothing
 python install.py                  # link into every tool dir found
 python install.py --dir ~/my/dir   # link straight into ~/my/dir instead (repeatable)
 python install.py --force          # replace existing files or links in the way
+python install.py --no-roles       # personas only
+python install.py --roles-only     # plain roles only, no backstory
 ```
 
 Existing files are left alone unless you pass `--force`.

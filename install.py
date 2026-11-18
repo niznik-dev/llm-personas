@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""Soft-link the built persona files into your AI tools' user directories.
+"""Soft-link the built personas and roles into your AI tools' user directories.
 
 By default this looks in your home directory for the config directories of
 common AI tools (~/.claude, ~/.codex, ...) and, in each one it finds, links
-every generated persona file there as:
+every generated persona file and every role file there:
 
     <tool dir>/personas/<name>.md  ->  <this repo>/personas/<name>/<name>.md
+    <tool dir>/personas/<role>.md  ->  <this repo>/roles/<role>.md
+
+Persona and role names never overlap (bram.md vs slate.md), so both tiers
+share one flat folder. Use --no-roles for personas only, or --roles-only for
+the plain roles without the backstory.
 
 Because these are symlinks, a `git pull` plus `python build.py` updates every
 install at once. Tool directories that don't exist are never created.
@@ -24,6 +29,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 PERSONAS = ROOT / "personas"
+ROLES = ROOT / "roles"
 
 # AI tool user directories, relative to $HOME. Only ones that already exist
 # are used; personas go in a "personas" subdirectory of each.
@@ -53,6 +59,11 @@ def find_persona_files() -> tuple[list[Path], list[str]]:
     return found, unbuilt
 
 
+def find_role_files() -> list[Path]:
+    """Return the role files; each is a complete prompt with no build step."""
+    return sorted(ROLES.glob("*.md"))
+
+
 def detect_tool_dirs(home: Path) -> list[Path]:
     """Return the "personas" install dir for each AI tool dir present in home."""
     return [home / d / "personas" for d in TOOL_DIRS if (home / d).is_dir()]
@@ -71,7 +82,7 @@ def check_dest_dir(dest_dir: Path) -> None:
             raise NotADirectoryError(errno.ENOTDIR, "Not a directory", str(path))
 
 
-def link_persona(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) -> str:
+def link_file(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) -> str:
     """Link dest_dir/<source name> to source. Return a status for reporting.
 
     Statuses: "linked", "relinked", "ok" (already correct), or "skipped"
@@ -121,6 +132,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="show what would happen without changing anything",
     )
+    tiers = parser.add_mutually_exclusive_group()
+    tiers.add_argument(
+        "--no-roles",
+        action="store_true",
+        help="link only the personas, not the plain roles",
+    )
+    tiers.add_argument(
+        "--roles-only",
+        action="store_true",
+        help="link only the plain roles, not the personas",
+    )
     return parser.parse_args(argv)
 
 
@@ -128,11 +150,18 @@ def main(argv: list[str] | None = None, home: Path | None = None) -> int:
     args = parse_args(argv)
     home = home or Path.home()
 
-    personas, unbuilt = find_persona_files()
-    for name in unbuilt:
-        print(f"warning: personas/{name}/{name}.md not built; run `python build.py`")
-    if not personas:
-        print("No built persona files found; run `python build.py` first.")
+    sources: list[Path] = []
+    if not args.roles_only:
+        personas, unbuilt = find_persona_files()
+        for name in unbuilt:
+            print(
+                f"warning: personas/{name}/{name}.md not built; run `python build.py`"
+            )
+        sources += personas
+    if not args.no_roles:
+        sources += find_role_files()
+    if not sources:
+        print("No persona or role files found; run `python build.py` first.")
         return 1
 
     if args.dir:
@@ -147,9 +176,9 @@ def main(argv: list[str] | None = None, home: Path | None = None) -> int:
     prefix = "[dry run] " if args.dry_run else ""
     for target in targets:
         print(f"{prefix}{target}")
-        for source in personas:
+        for source in sources:
             try:
-                status = link_persona(
+                status = link_file(
                     source, target, force=args.force, dry_run=args.dry_run
                 )
             except OSError as exc:
