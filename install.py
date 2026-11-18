@@ -66,7 +66,7 @@ def link_persona(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) ->
     link = dest_dir / source.name
     status = "linked"
     if link.is_symlink() or link.exists():
-        if link.is_symlink() and link.resolve() == source.resolve():
+        if link.resolve() == source.resolve():
             return "ok"
         # Never delete a real directory, even with --force.
         if not force or (link.is_dir() and not link.is_symlink()):
