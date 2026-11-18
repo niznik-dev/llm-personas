@@ -251,3 +251,22 @@ def test_force_keeps_the_original_if_symlink_creation_fails(
     assert not (target / "pip.md").is_symlink()
     assert "failed" in capsys.readouterr().out
     assert sorted(p.name for p in target.iterdir()) == ["pip.md"]
+
+
+def test_force_preserves_a_colliding_temporary_file(repo, tmp_path, monkeypatch):
+    target = tmp_path / "out"
+    target.mkdir()
+    link = target / "pip.md"
+    link.write_text("my own copy")
+    collision = target / ".pip.md.tmp-collision"
+    collision.write_text("unrelated file")
+    names = iter(("collision", "fresh"))
+    monkeypatch.setattr(install.secrets, "token_hex", lambda _: next(names))
+
+    assert install.link_file(
+        repo / "pip" / "pip.md", target, force=True, dry_run=False
+    ) == "relinked"
+
+    assert link.resolve() == (repo / "pip" / "pip.md").resolve()
+    assert collision.read_text() == "unrelated file"
+    assert not (target / ".pip.md.tmp-fresh").exists()

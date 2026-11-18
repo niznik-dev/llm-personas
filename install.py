@@ -25,6 +25,7 @@ Existing files are never overwritten unless you pass --force. Run
 import argparse
 import errno
 import os
+import secrets
 import sys
 from pathlib import Path
 
@@ -89,10 +90,14 @@ def replace_with_link(link: Path, source: Path) -> None:
     The new symlink is built under a temporary name beside the old file and
     renamed over it, so if creating it fails the original is left untouched.
     """
-    tmp = link.with_name(f".{link.name}.tmp-{os.getpid()}")
-    tmp.unlink(missing_ok=True)
+    while True:
+        tmp = link.with_name(f".{link.name}.tmp-{secrets.token_hex(8)}")
+        try:
+            tmp.symlink_to(source)
+            break
+        except FileExistsError:
+            continue
     try:
-        tmp.symlink_to(source)
         os.replace(tmp, link)
     except OSError:
         tmp.unlink(missing_ok=True)
