@@ -24,6 +24,7 @@ Existing files are never overwritten unless you pass --force. Run
 
 import argparse
 import errno
+import os
 import sys
 from pathlib import Path
 
@@ -82,6 +83,22 @@ def check_dest_dir(dest_dir: Path) -> None:
             raise NotADirectoryError(errno.ENOTDIR, "Not a directory", str(path))
 
 
+def replace_with_link(link: Path, source: Path) -> None:
+    """Replace link with a symlink to source without a window for data loss.
+
+    The new symlink is built under a temporary name beside the old file and
+    renamed over it, so if creating it fails the original is left untouched.
+    """
+    tmp = link.with_name(f".{link.name}.tmp-{os.getpid()}")
+    tmp.unlink(missing_ok=True)
+    try:
+        tmp.symlink_to(source)
+        os.replace(tmp, link)
+    except OSError:
+        tmp.unlink(missing_ok=True)
+        raise
+
+
 def link_file(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) -> str:
     """Link dest_dir/<source name> to source. Return a status for reporting.
 
@@ -97,10 +114,10 @@ def link_file(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) -> st
         if not force or (link.is_dir() and not link.is_symlink()):
             return "skipped"
         status = "relinked"
-        if not dry_run:
-            link.unlink()
     if dry_run:
         check_dest_dir(dest_dir)
+    elif status == "relinked":
+        replace_with_link(link, source)
     else:
         dest_dir.mkdir(parents=True, exist_ok=True)
         link.symlink_to(source)

@@ -130,6 +130,8 @@ def test_force_replaces_files_and_stale_links(repo, home, tmp_path):
 
     assert (target / "pip.md").resolve() == (repo / "pip" / "pip.md").resolve()
     assert (target / "quill.md").resolve() == (repo / "quill" / "quill.md").resolve()
+    # No temporary links are left behind.
+    assert not [p for p in target.iterdir() if ".tmp-" in p.name]
 
 
 def test_force_never_deletes_a_real_directory(repo, home, tmp_path):
@@ -229,3 +231,23 @@ def test_real_persona_and_role_names_do_not_collide():
 
     assert role_names, "no role files found; is ROLES pointing at the repo?"
     assert not persona_names & role_names
+
+
+def test_force_keeps_the_original_if_symlink_creation_fails(
+    repo, home, tmp_path, monkeypatch, capsys
+):
+    target = tmp_path / "out"
+    target.mkdir()
+    (target / "pip.md").write_text("my own copy")
+
+    def no_symlinks(self, *args, **kwargs):
+        raise OSError("symlinks not supported")
+
+    monkeypatch.setattr(install.Path, "symlink_to", no_symlinks)
+
+    assert install.main(["--dir", str(target), "--force"], home=home) == 1
+
+    assert (target / "pip.md").read_text() == "my own copy"
+    assert not (target / "pip.md").is_symlink()
+    assert "failed" in capsys.readouterr().out
+    assert sorted(p.name for p in target.iterdir()) == ["pip.md"]
