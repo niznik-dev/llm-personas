@@ -145,3 +145,29 @@ def test_no_built_personas(tmp_path, home, monkeypatch, capsys):
 
     assert install.main(["--dir", str(tmp_path / "out")], home=home) == 1
     assert "build.py" in capsys.readouterr().out
+
+
+def test_dry_run_reports_a_file_where_the_dest_dir_should_be(
+    repo, home, tmp_path, capsys
+):
+    blocker = tmp_path / "blocker"
+    blocker.write_text("i am a file")
+
+    # Both the dir itself and a missing dir beneath the file are blocked.
+    for target in (blocker, blocker / "sub"):
+        assert install.main(["--dir", str(target), "--dry-run"], home=home) == 1
+
+    out = capsys.readouterr().out
+    assert "failed" in out
+    assert "linked" not in out
+    assert blocker.read_text() == "i am a file"
+
+
+def test_dry_run_matches_real_run_exit_status(repo, home, tmp_path):
+    blocker = tmp_path / "blocker"
+    blocker.write_text("i am a file")
+
+    dry = install.main(["--dir", str(blocker), "--dry-run"], home=home)
+    real = install.main(["--dir", str(blocker)], home=home)
+
+    assert dry == real == 1

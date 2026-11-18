@@ -18,6 +18,7 @@ Existing files are never overwritten unless you pass --force. Run
 """
 
 import argparse
+import errno
 import sys
 from pathlib import Path
 
@@ -57,6 +58,19 @@ def detect_tool_dirs(home: Path) -> list[Path]:
     return [home / d / "personas" for d in TOOL_DIRS if (home / d).is_dir()]
 
 
+def check_dest_dir(dest_dir: Path) -> None:
+    """Raise OSError if dest_dir can't be created or used as a directory.
+
+    Walks up to the nearest existing ancestor without creating anything, so a
+    dry run reports the same blockers (a regular file in the way) as a real run.
+    """
+    for path in (dest_dir, *dest_dir.parents):
+        if path.is_dir():
+            return
+        if path.exists() or path.is_symlink():  # a file or a broken link
+            raise NotADirectoryError(errno.ENOTDIR, "Not a directory", str(path))
+
+
 def link_persona(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) -> str:
     """Link dest_dir/<source name> to source. Return a status for reporting.
 
@@ -74,7 +88,9 @@ def link_persona(source: Path, dest_dir: Path, *, force: bool, dry_run: bool) ->
         status = "relinked"
         if not dry_run:
             link.unlink()
-    if not dry_run:
+    if dry_run:
+        check_dest_dir(dest_dir)
+    else:
         dest_dir.mkdir(parents=True, exist_ok=True)
         link.symlink_to(source)
     return status
