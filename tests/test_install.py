@@ -263,9 +263,10 @@ def test_force_preserves_a_colliding_temporary_file(repo, tmp_path, monkeypatch)
     names = iter(("collision", "fresh"))
     monkeypatch.setattr(install.secrets, "token_hex", lambda _: next(names))
 
-    assert install.link_file(
-        repo / "pip" / "pip.md", target, force=True, dry_run=False
-    ) == "relinked"
+    assert (
+        install.link_file(repo / "pip" / "pip.md", target, force=True, dry_run=False)
+        == "relinked"
+    )
 
     assert link.resolve() == (repo / "pip" / "pip.md").resolve()
     assert collision.read_text() == "unrelated file"
